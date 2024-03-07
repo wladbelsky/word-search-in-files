@@ -2,6 +2,7 @@ package searcher
 
 import (
 	"io/fs"
+	"os"
 	"reflect"
 	"sort"
 	"testing"
@@ -56,6 +57,15 @@ func TestSearcher_Search(t *testing.T) {
 			args:      args{word: "World"},
 			wantFiles: nil,
 			wantErr:   false,
+		},
+		{
+			name: "Error",
+			fields: fields{
+				FS: os.DirFS("testdata"), // Тестовая директория не существует
+			},
+			args:      args{word: "World"},
+			wantFiles: nil,
+			wantErr:   true,
 		},
 	}
 	for _, tt := range tests {

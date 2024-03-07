@@ -10,7 +10,7 @@ import (
 
 func fileSearchEndpoint(c *gin.Context) {
 	root, err := filepath.Abs("./examples")
-	searcher := searcher.Searcher{
+	s := searcher.Searcher{
 		FS: os.DirFS(root),
 	}
 	word := c.Query("word")
@@ -20,11 +20,12 @@ func fileSearchEndpoint(c *gin.Context) {
 		})
 		return
 	}
-	files, err := searcher.Search(word)
+	files, err := s.Search(word)
 	if err != nil {
 		log.Println("search error:", err)
 		c.JSON(500, gin.H{
 			"error": "search error",
+			"files": nil,
 		})
 		return
 	}
